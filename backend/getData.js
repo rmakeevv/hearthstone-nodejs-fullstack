@@ -3,7 +3,7 @@ const url =
 const options = {
   method: 'GET',
   headers: {
-    'X-RapidAPI-Key': 'd9d3764f7fmsh0d91d6032e19e35p191e0fjsnee3a896399e3',
+    'X-RapidAPI-Key': process.env.X_RAPIDAPI_KEY,
     'X-RapidAPI-Host': 'omgvamp-hearthstone-v1.p.rapidapi.com',
   },
 };

@@ -13,10 +13,18 @@ let PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/cards', (req, res) => res.status(200).send());
+export const getAllCards = async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM cards;');
+    return res.statusCode(200).send(result);
+  } catch (e) {}
+};
+
+app.get('/cards', getAllCards);
 
 export const uploadData = async (req, res) => {
   try {
+    await pool.query('DELETE FROM cards;');
     const data = await getData();
     let sampleQuery = data.map(
       (myRow) => `('${myRow.cardId}','${myRow.name}') `
