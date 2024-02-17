@@ -16,8 +16,10 @@ app.use(cors());
 export const getAllCards = async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM cards;');
-    return res.statusCode(200).send(result);
-  } catch (e) {}
+    return res.status(200).send(result.rows);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 app.get('/cards', getAllCards);
