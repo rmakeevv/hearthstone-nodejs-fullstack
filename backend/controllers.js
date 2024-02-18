@@ -15,9 +15,9 @@ export const uploadData = async (req, res) => {
     await pool.query('DELETE FROM cards;');
     const data = await getData();
     let sampleQuery = data.map(
-      (myRow) => `('${myRow.cardId}','${myRow.name}') `
+      (myRow) => `('${myRow.cardId}','${myRow.name}', '${myRow.img}') `
     );
-    const text = `INSERT INTO cards (card_id, name) VALUES ${sampleQuery} RETURNING *`;
+    const text = `INSERT INTO cards (card_id, name, img) VALUES ${sampleQuery} RETURNING *`;
     const result = await pool.query(text);
     res.send(result.rows[0]);
   } catch (e) {
