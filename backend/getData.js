@@ -1,5 +1,5 @@
 const url =
-  'https://omgvamp-hearthstone-v1.p.rapidapi.com/cards/classes/Warrior/?cost=5&attack=3&type=Minion&locale=ruRU';
+  'https://omgvamp-hearthstone-v1.p.rapidapi.com/cards/classes/Warrior/?cost=5&locale=ruRU';
 const options = {
   method: 'GET',
   headers: {

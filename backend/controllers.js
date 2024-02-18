@@ -15,12 +15,14 @@ export const uploadData = async (req, res) => {
     await pool.query('DELETE FROM cards;');
     const data = await getData();
     let sampleQuery = data.map(
-      (myRow) => `('${myRow.cardId}','${myRow.name}', '${myRow.img}') `
+      (myRow) =>
+        `('${myRow.cardId}','${myRow.name.replaceAll(/['"]+/g, '')}', '${myRow.img}')`
     );
     const text = `INSERT INTO cards (card_id, name, img) VALUES ${sampleQuery} RETURNING *`;
     const result = await pool.query(text);
-    res.send(result.rows[0]);
+    res.send(result.rows);
   } catch (e) {
     console.warn(e.message);
+    res.status(404).send();
   }
 };

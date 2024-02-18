@@ -1,3 +1,4 @@
+import { Button } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./index.css";
@@ -13,7 +14,7 @@ const listStyle: React.CSSProperties = {
   display: "flex",
   flexWrap: "wrap",
   gap: "12px",
-  padding: "12px",
+  padding: "12px 0",
 };
 
 const listItem: React.CSSProperties = {
@@ -35,16 +36,28 @@ function App() {
       .then((data) => setData(data.data));
   }, []);
 
+  const onUpload = async () => {
+    axios
+      .get<ICard[]>("http://localhost:5000/upload")
+      .then((data) => setData(data.data));
+  };
+
   return (
     <div style={{ marginTop: "80px" }}>
       <Header />
-      <div style={listStyle}>
-        {data?.map((card) => (
-          <div key={card.card_id} style={listItem}>
-            {card.name}
-            <img src={card.img} alt={card.name} />
-          </div>
-        ))}
+      <div style={{ padding: "20px" }}>
+        <Button type={"default"} onClick={onUpload}>
+          Upload
+        </Button>
+
+        <div style={listStyle}>
+          {data?.map((card) => (
+            <div key={card.card_id} style={listItem}>
+              {card.name}
+              <img src={card.img} alt={card.name} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
