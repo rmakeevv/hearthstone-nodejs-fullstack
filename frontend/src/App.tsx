@@ -17,6 +17,14 @@ const listStyle: React.CSSProperties = {
   padding: "12px 0",
 };
 
+const listStyleLoading: React.CSSProperties = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "12px",
+  padding: "12px 0",
+  opacity: "0.5",
+};
+
 const listItem: React.CSSProperties = {
   display: "flex",
   flexDirection: "column",
@@ -30,6 +38,8 @@ const listItem: React.CSSProperties = {
 
 function App() {
   const [data, setData] = useState<ICard[] | undefined>();
+  const [uploadLoading, setUploadLoading] = useState(false);
+
   useEffect(() => {
     axios
       .get<ICard[]>("http://localhost:5000/cards")
@@ -37,20 +47,26 @@ function App() {
   }, []);
 
   const onUpload = async () => {
-    axios
-      .get<ICard[]>("http://localhost:5000/upload")
-      .then((data) => setData(data.data));
+    try {
+      setUploadLoading(true);
+      const data = await axios.get<ICard[]>("http://localhost:5000/upload");
+      setData(data.data);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setUploadLoading(false);
+    }
   };
 
   return (
     <div style={{ marginTop: "80px" }}>
       <Header />
       <div style={{ padding: "20px" }}>
-        <Button type={"default"} onClick={onUpload}>
+        <Button type={"default"} onClick={onUpload} loading={uploadLoading}>
           Upload
         </Button>
 
-        <div style={listStyle}>
+        <div style={uploadLoading ? listStyleLoading : listStyle}>
           {data?.map((card) => (
             <div key={card.card_id} style={listItem}>
               {card.name}
